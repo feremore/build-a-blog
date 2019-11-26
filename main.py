@@ -17,30 +17,26 @@ class Blog_Post(db.Model):
         self.blog_content = blog_content
    
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/', methods=['POST'])
 def index():
     
     blog_list= Blog_Post.query.all()
     
     return render_template('blog-main-page.html',blog_list=blog_list)
-@app.route('/blog')
+@app.route('/blog', methods=['POST','GET'])
 def build_blog():
-    # blog_title = request.args.get('blog-title')
-    blog_body = request.args.get('blog-body')
-    
+    id_blog = request.args.get('id')
+    blog_post = Blog_Post.query.get(id_blog)
+   
 
-    return render_template('blog.html')
+    return render_template('blog.html',blog_post=blog_post)
 @app.route('/add-blog-post',methods=['POST','GET'])
 def add_blog():
     encoded_error = request.args.get("error")
     if request.method == 'POST':
         blog_title = request.form['blog-title']
         blog_body = request.form['blog-body']
-        # if blog_title.strip()=='':
-        #     return redirect('/add-blog-post?error='+"Please enter title.")
-        # if blog_body.strip()=='':
-        #     return redirect('/add-blog-post?error='+'Please add content to blog')
-        # else:
+        
         new_blog_post = Blog_Post(blog_title,blog_body)
         db.session.add(new_blog_post)
         db.session.commit()
