@@ -5,9 +5,9 @@
         <p>No blog posts yet</p>
     {% else %}
         {% for blog in blog_list %}
-        <form>
+        <form method='GET'>
         
-        <h2>{{blog.blog_title}}</h2>
+        <h1><a href="/blog"><strong>{{blog.blog_title}}</strong></a></h1>
         <p>{{blog.blog_content}}</p>
         </form>    
         {% endfor %}

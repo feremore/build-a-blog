@@ -15,23 +15,21 @@ class Blog_Post(db.Model):
     def __init__(self,blog_title,blog_content):
         self.blog_title = blog_title
         self.blog_content = blog_content
-    def get_blog_title(self):
-        return self.blog_title
-    def set_blog_title(self,new_blog_title):
-        self.blog_title = new_blog_title
-    def get_blog_content(self):
-        return self.blog_content
-    def set_blog_content(self,new_blog_content):
-        self.blog_content = new_blog_content
+   
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     
     blog_list= Blog_Post.query.all()
-        
-    return render_template('blog-main-page.html',blog_list=blog_list)
-
     
+    return render_template('blog-main-page.html',blog_list=blog_list)
+@app.route('/blog')
+def build_blog():
+    # blog_title = request.args.get('blog-title')
+    blog_body = request.args.get('blog-body')
+    
+
+    return render_template('blog.html')
 @app.route('/add-blog-post',methods=['POST','GET'])
 def add_blog():
     encoded_error = request.args.get("error")
@@ -51,8 +49,6 @@ def add_blog():
 
     
     return render_template('add-post.html')
-@app.route('/blog',methods=['POST'])
-def new_blog():
-    return redirect('/')
+
 if __name__=='__main__':
     app.run()
