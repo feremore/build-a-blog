@@ -5,10 +5,8 @@
         <p>No blog posts yet</p>
     {% else %}
         {% for blog in blog_list %}
-        <form action = '/blog' method="POST">
-        <input type='hidden' name="blog-id"value='{{blog.id}}'>
-        <input type='hidden' name="blog-title"value='{{blog.blog_title}}'>
-        <input type='hidden' name="blog-body"value='{{blog.blog_content}}'>
+        <form action = '/blog' method="POST">        
+        
         <h1><a method="GET" href="/blog?id={{blog.id}}"value='{{blog.id}}'><strong>{{blog.blog_title}}</strong></a></h1>
         <p>{{blog.blog_content}}</p>
         </form>    

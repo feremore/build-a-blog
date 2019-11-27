@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -6,7 +6,7 @@ app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:blog@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
-
+app.secret_key = 'y337kGcys&zP3B'
 class Blog_Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     blog_title = db.Column(db.String(120))
@@ -17,7 +17,7 @@ class Blog_Post(db.Model):
         self.blog_content = blog_content
    
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST','GET'])
 def index():
     
     blog_list= Blog_Post.query.all()
@@ -36,7 +36,15 @@ def add_blog():
     if request.method == 'POST':
         blog_title = request.form['blog-title']
         blog_body = request.form['blog-body']
-        
+        title_error=''
+        body_error=''
+        if blog_title.strip()=='':
+            title_error='Please enter a title for your blog.'
+            
+        if blog_body.strip()=='':
+            body_error='Please enter a body for your blog'
+        if title_error!='' or body_error!='':    
+            return render_template('add-post.html',body_error=body_error,title_error=title_error, blog_title=blog_title, blog_body=blog_body)
         new_blog_post = Blog_Post(blog_title,blog_body)
         db.session.add(new_blog_post)
         db.session.commit()
