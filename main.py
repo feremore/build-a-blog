@@ -17,13 +17,13 @@ class Blog_Post(db.Model):
         self.blog_content = blog_content
    
 
-@app.route('/', methods=['POST','GET'])
+@app.route('/')
 def index():
     
     blog_list= Blog_Post.query.all()
     
     return render_template('blog.html',blog_list=blog_list)
-@app.route('/blog', methods=['POST','GET'])
+@app.route('/blog')
 def build_blog():
     blog_list= Blog_Post.query.all()
     
