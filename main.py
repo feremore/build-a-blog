@@ -22,14 +22,20 @@ def index():
     
     blog_list= Blog_Post.query.all()
     
-    return render_template('blog-main-page.html',blog_list=blog_list)
+    return render_template('blog.html',blog_list=blog_list)
 @app.route('/blog', methods=['POST','GET'])
 def build_blog():
+    blog_list= Blog_Post.query.all()
+    
+
     id_blog = request.args.get('id')
     blog_post = Blog_Post.query.get(id_blog)
-   
 
-    return render_template('blog.html',blog_post=blog_post)
+
+    return render_template('blog.html',blog_post=blog_post, blog_list=blog_list)
+
+    
+    
 @app.route('/add-blog-post',methods=['POST','GET'])
 def add_blog():
     encoded_error = request.args.get("error")
@@ -45,11 +51,11 @@ def add_blog():
             body_error='Please enter a body for your blog'
         if title_error!='' or body_error!='':    
             return render_template('add-post.html',body_error=body_error,title_error=title_error, blog_title=blog_title, blog_body=blog_body)
-        new_blog_post = Blog_Post(blog_title,blog_body)
-        db.session.add(new_blog_post)
+        blog_post = Blog_Post(blog_title,blog_body)
+        db.session.add(blog_post)
         db.session.commit()
-        blog_list = Blog_Post.query.all()
-        return render_template('blog-main-page.html',blog_list=blog_list)
+        
+        return redirect('/blog?id={0}'.format(blog_post.id))
 
     
     return render_template('add-post.html')
