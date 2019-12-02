@@ -38,7 +38,7 @@ def build_blog():
     
 @app.route('/add-blog-post',methods=['POST','GET'])
 def add_blog():
-    encoded_error = request.args.get("error")
+    
     if request.method == 'POST':
         blog_title = request.form['blog-title']
         blog_body = request.form['blog-body']
